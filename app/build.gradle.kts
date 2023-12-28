@@ -72,4 +72,8 @@ dependencies {
 
     //coli
     implementation("io.coil-kt:coil-compose:2.5.0")
+
+    //live data (used in collect as State)
+    implementation("androidx.compose.runtime:runtime-livedata:<compose_version>")
+
 }
