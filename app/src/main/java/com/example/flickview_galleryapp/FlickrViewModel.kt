@@ -14,6 +14,9 @@ class FlickrViewModel : ViewModel(){
     private val _photosStateFlow = MutableStateFlow<List<PhotoItem>>(emptyList())
     val photosStateFlow = _photosStateFlow.asStateFlow()
 
+    private val _selectedPhoto = MutableStateFlow<PhotoItem?>(null)
+    val selectedPhoto = _selectedPhoto.asStateFlow()
+
     fun fetchPhotos() {
         viewModelScope.launch {
             try {
@@ -26,4 +29,16 @@ class FlickrViewModel : ViewModel(){
             }
         }
     }
+
+    fun onEvent(event: UserInputEvents){
+        when(event){
+            is UserInputEvents.SelectedPhotoItem ->{
+                _selectedPhoto.value = event.photoItem
+            }
+        }
+    }
+}
+
+sealed class UserInputEvents{
+    data class SelectedPhotoItem(val photoItem : PhotoItem) : UserInputEvents()
 }

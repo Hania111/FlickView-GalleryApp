@@ -15,6 +15,7 @@ class FlickrApi {
     private val apiKey = ""
     private val tag = "WebServicesFunTag"
 
+    // PODZIELIĆ NA MNIEJSZE FUNKCJE
     suspend fun fetchInterestingPhotos(): List<PhotoItem> = withContext(Dispatchers.IO) {
         val url = constructInterestingPhotoListURL()
         val interestingPhotoList = mutableListOf<PhotoItem>()

@@ -2,6 +2,7 @@ package com.example.flickview_galleryapp.ui.screen
 
 import android.provider.ContactsContract
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,11 +32,12 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.example.flickview_galleryapp.UserInputEvents
 import java.time.format.TextStyle
 
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(navController: NavHostController, flickrViewModel : FlickrViewModel) {
 
     val viewModel: FlickrViewModel = viewModel()
     val photos by viewModel.photosStateFlow.collectAsState()
@@ -60,34 +62,39 @@ fun HomeScreen(navController: NavHostController) {
         if (photos.isEmpty()) {
             Text("Loading photos...")
         } else {
-            PhotosList(photos = photos)
+            PhotosList(photos = photos, navController, flickrViewModel)
         }
     }
 }
 
-    @Composable
-    fun PhotosList(photos: List<PhotoItem>) {
-        val configuration = LocalConfiguration.current
-        val imageSize = configuration.screenWidthDp.dp / 3
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            content = {
-                items(photos) { photo ->
-                    Image(
-                        painter = rememberImagePainter(
-                            data = photo.photoUrl,
-                            builder = {
-                                crossfade(true)
-                            }
-                        ),
-                        contentDescription = photo.title,
-                        modifier = Modifier
-                            .size(imageSize)
-                            .padding(1.dp),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
+@Composable
+fun PhotosList(photos: List<PhotoItem>, navController: NavHostController, flickrViewModel : FlickrViewModel) {
+    val configuration = LocalConfiguration.current
+    val imageSize = configuration.screenWidthDp.dp / 3
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        content = {
+            items(photos) { photo ->
+                Image(
+                    painter = rememberImagePainter(
+                        data = photo.photoUrl,
+                        builder = {
+                            crossfade(true)
+                        }
+                    ),
+                    contentDescription = photo.title,
+                    modifier = Modifier
+                        .size(imageSize)
+                        .padding(1.dp)
+                        .clickable {
+                            flickrViewModel.onEvent(UserInputEvents.SelectedPhotoItem(photo))
+                            navController.navigate(Routes.PICTURE_DESCRIPTION_SCREEN)
+                        },
+                    contentScale = ContentScale.Crop,
+
+                )
             }
-        )
+        }
+    )
 }
 
