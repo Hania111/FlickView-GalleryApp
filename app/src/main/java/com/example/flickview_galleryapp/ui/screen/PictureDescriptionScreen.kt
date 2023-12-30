@@ -24,26 +24,33 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.example.flickview_galleryapp.FlickrViewModel
+import com.example.flickview_galleryapp.PhotoAuthor
 import com.example.flickview_galleryapp.PhotoItem
 import com.example.flickview_galleryapp.UserInputEvents
 
 @Composable
 fun PictureDescriptionScreen(flickrViewModel : FlickrViewModel) {
     val selectedPhotoItem by flickrViewModel.selectedPhoto.collectAsState()
+    val photoAuthor by flickrViewModel.authorInfo.collectAsState()
     Column(modifier = Modifier.fillMaxWidth()) {
         selectedPhotoItem?.let {photoItem ->
             PrintPhoto(selectedPhotoItem = photoItem)
-            PrintDescription(selectedPhotoItem = photoItem)
+            photoAuthor?.let { author ->
+                PrintDescription(selectedPhotoItem = photoItem, photoAuthor = author)
+            } ?: run {
+                Text(text = "Loading author information...", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+            }
         }
     }
 }
 
 @Composable
-fun PrintDescription(selectedPhotoItem: PhotoItem) {
+fun PrintDescription(selectedPhotoItem: PhotoItem, photoAuthor : PhotoAuthor) {
     Column(modifier = Modifier.fillMaxWidth()) {
         DescriptionItem(label = "Title", text = selectedPhotoItem.title)
         DescriptionItem(label = "Date Taken", text = selectedPhotoItem.dateTaken)
-        DescriptionItem(label = "ID", text = selectedPhotoItem.id)
+        DescriptionItem(label = "Author username", text = photoAuthor.username)
+        DescriptionItem(label = "Author name", text = photoAuthor.fullnam)
     }
 }
 

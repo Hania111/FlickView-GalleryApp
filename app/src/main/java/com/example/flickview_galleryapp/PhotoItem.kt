@@ -5,4 +5,5 @@ data class PhotoItem(
     val title: String,
     val dateTaken: String,
     val photoUrl: String,
+    val owner: String,
 )
