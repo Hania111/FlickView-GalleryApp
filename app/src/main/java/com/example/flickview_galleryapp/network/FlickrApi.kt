@@ -12,8 +12,8 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class FlickrApi {
-    private val baseUrl = "https://api.flickr.com/services/rest"
-    private val apiKey = ""
+    private val baseUrl = ""
+    private val apiKey = "128da3989e009275cf487e3bb12da190"
     private val tag = "WebServicesFunTag"
 
 
@@ -23,11 +23,11 @@ class FlickrApi {
             // Opening URL connection
             val urlObject = URL(url)
             val urlConnection = urlObject.openConnection() as HttpURLConnection
-            //urlConnection.connect()
 
             // Downloading JSON response
             val jsonResult = urlConnection.inputStream.bufferedReader().use { it.readText() }
             //Log.d(tag, "fetchAuthor: $jsonResult")
+
             // Parse the json
             val jsonObject = JSONObject(jsonResult)
             parseAuthorInfo(jsonObject)
@@ -38,10 +38,8 @@ class FlickrApi {
         }
     }
 
-    // PODZIELIĆ NA MNIEJSZE FUNKCJE
     suspend fun fetchInterestingPhotos(): List<PhotoItem> = withContext(Dispatchers.IO) {
         val url = constructInterestingPhotoListURL()
-        val interestingPhotoList = mutableListOf<PhotoItem>()
         try {
             // Opening URL connection
             val urlObject = URL(url)
@@ -53,19 +51,12 @@ class FlickrApi {
 
             // Parse the json
             val jsonObject = JSONObject(jsonResult)
-            val photosObject = jsonObject.getJSONObject("photos")
-            val photoArray = photosObject.getJSONArray("photo")
-            for (i in 0 until photoArray.length()) {
-                val singlePhotoObject = photoArray.getJSONObject(i)
-                val photoItem = parseInterestingPhoto(singlePhotoObject)
-                photoItem?.let {
-                    interestingPhotoList.add(it)
-                }
-            }
+            parseIntrestingPhotos(jsonObject)
+
         } catch (e: Exception) {
             Log.e(tag, "Error fetching photos", e)
+            emptyList()
         }
-        interestingPhotoList
     }
 
     private fun constructAuthorUrl(authorId: String): String {
@@ -76,7 +67,19 @@ class FlickrApi {
         return "$baseUrl?method=flickr.interestingness.getList&api_key=$apiKey&format=json&nojsoncallback=1&extras=date_taken,url_h"
     }
 
-
+    private fun parseIntrestingPhotos(jsonObject: JSONObject) : MutableList<PhotoItem> {
+        val interestingPhotoList = mutableListOf<PhotoItem>()
+        val photosObject = jsonObject.getJSONObject("photos")
+        val photoArray = photosObject.getJSONArray("photo")
+        for (i in 0 until photoArray.length()) {
+            val singlePhotoObject = photoArray.getJSONObject(i)
+            val photoItem = parseInterestingPhoto(singlePhotoObject)
+            photoItem?.let {
+                interestingPhotoList.add(it)
+            }
+        }
+        return interestingPhotoList
+    }
 
     private fun parseInterestingPhoto(jsonObject: JSONObject): PhotoItem? {
         return try {

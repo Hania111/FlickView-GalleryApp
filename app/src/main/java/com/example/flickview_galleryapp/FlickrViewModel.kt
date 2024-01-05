@@ -12,7 +12,6 @@ import kotlinx.coroutines.withContext
 
 class FlickrViewModel : ViewModel(){
     private val flickrApi = FlickrApi()
-
     private val _photosStateFlow = MutableStateFlow<List<PhotoItem>>(emptyList())
     val photosStateFlow = _photosStateFlow.asStateFlow()
 

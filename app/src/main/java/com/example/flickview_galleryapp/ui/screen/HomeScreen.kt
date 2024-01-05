@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.example.flickview_galleryapp.R
 import com.example.flickview_galleryapp.UserInputEvents
 import java.time.format.TextStyle
 
@@ -48,7 +49,7 @@ fun HomeScreen(navController: NavHostController, flickrViewModel : FlickrViewMod
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = "Gallery App",
+            text = stringResource(R.string.gallery_app),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
@@ -60,7 +61,7 @@ fun HomeScreen(navController: NavHostController, flickrViewModel : FlickrViewMod
             )
         )
         if (photos.isEmpty()) {
-            Text("Loading photos...")
+            Text(stringResource(R.string.loading_photos))
         } else {
             PhotosList(photos = photos, navController, flickrViewModel)
         }

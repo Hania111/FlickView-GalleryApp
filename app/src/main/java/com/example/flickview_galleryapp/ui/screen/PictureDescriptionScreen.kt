@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -26,7 +27,9 @@ import coil.compose.rememberImagePainter
 import com.example.flickview_galleryapp.FlickrViewModel
 import com.example.flickview_galleryapp.PhotoAuthor
 import com.example.flickview_galleryapp.PhotoItem
+import com.example.flickview_galleryapp.R
 import com.example.flickview_galleryapp.UserInputEvents
+import com.example.flickview_galleryapp.ui.theme.AppTypography
 
 @Composable
 fun PictureDescriptionScreen(flickrViewModel : FlickrViewModel) {
@@ -35,23 +38,34 @@ fun PictureDescriptionScreen(flickrViewModel : FlickrViewModel) {
     Column(modifier = Modifier.fillMaxWidth()) {
         selectedPhotoItem?.let {photoItem ->
             PrintPhoto(selectedPhotoItem = photoItem)
+            PrintDescription(selectedPhotoItem = photoItem)
             photoAuthor?.let { author ->
-                PrintDescription(selectedPhotoItem = photoItem, photoAuthor = author)
+                PrintAuthorDescription(photoAuthor = author)
             } ?: run {
-                Text(text = "Loading author information...", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+                Text(text = stringResource(R.string.can_t_fetch_information_about_author),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    style = AppTypography.defaultTextStyle,
+                    textAlign = TextAlign.Center)
             }
         }
     }
 }
 
 @Composable
-fun PrintDescription(selectedPhotoItem: PhotoItem, photoAuthor : PhotoAuthor) {
+fun PrintDescription(selectedPhotoItem: PhotoItem) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        DescriptionItem(label = "Title", text = selectedPhotoItem.title)
-        DescriptionItem(label = "Date Taken", text = selectedPhotoItem.dateTaken)
-        DescriptionItem(label = "Author username", text = photoAuthor.username)
-        DescriptionItem(label = "Author name", text = photoAuthor.fullnam)
+        DescriptionItem(label = stringResource(R.string.title), text = selectedPhotoItem.title)
+        DescriptionItem(label = stringResource(R.string.date_taken), text = selectedPhotoItem.dateTaken)
+
     }
+}
+
+@Composable
+fun PrintAuthorDescription(photoAuthor : PhotoAuthor) {
+    DescriptionItem(label = stringResource(R.string.author_username), text = photoAuthor.username)
+    DescriptionItem(label = stringResource(R.string.author_name), text = photoAuthor.fullname)
 }
 
 @Composable
@@ -63,11 +77,7 @@ fun DescriptionItem(label: String, text: String?) {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             textAlign = TextAlign.Center,
-            style = TextStyle(
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color.Black
-            )
+            style = AppTypography.defaultTextStyle
         )
     }
 }
@@ -87,7 +97,5 @@ fun PrintPhoto(selectedPhotoItem: PhotoItem){
             .fillMaxWidth()
             .fillMaxHeight(maxImageHeight)
             .aspectRatio(1f)
-        //    .fillMaxSize()
-        //.padding(16.dp),
     )
 }

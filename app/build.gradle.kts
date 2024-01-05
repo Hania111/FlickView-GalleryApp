@@ -74,6 +74,15 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
 
     //live data (used in collect as State)
-    implementation("androidx.compose.runtime:runtime-livedata:<compose_version>")
+    implementation("androidx.compose.runtime:runtime-livedata:1.0.0")
+
+    //testsdddd
+    testImplementation("com.google.truth:truth:1.1.3")
+    //testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    testImplementation("org.mockito:mockito-core:3.11.2")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
 }
