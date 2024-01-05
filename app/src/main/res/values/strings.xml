@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">FlickView-GalleryApp</string>
+    <string name="gallery_app">Gallery App</string>
+    <string name="loading_photos">Loading photos...</string>
+    <string name="loading_author_information">Loading author information...</string>
+    <string name="title">Title</string>
+    <string name="date_taken">Date Taken</string>
+    <string name="author_username">Author username</string>
+    <string name="author_name">Author name</string>
+    <string name="can_t_fetch_information_about_author">Can\'t fetch information about the author</string>
 </resources>

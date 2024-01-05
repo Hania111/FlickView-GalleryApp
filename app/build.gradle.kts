@@ -50,6 +50,9 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.navigation:navigation-compose:2.7.0")
+    //implementation("androidx.naviagation:naviagation-compose:2.7.5")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -66,4 +69,20 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //coli
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
+    //live data (used in collect as State)
+    implementation("androidx.compose.runtime:runtime-livedata:1.0.0")
+
+    //testsdddd
+    testImplementation("com.google.truth:truth:1.1.3")
+    //testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    testImplementation("org.mockito:mockito-core:3.11.2")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+
 }
